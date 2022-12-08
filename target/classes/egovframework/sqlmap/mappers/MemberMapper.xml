@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.member.mapper.MemberMapper">
+	<!-- 회원정보테이블의 데이터를 MemberVO의 변수에 각각 잘 바인딩되도록
+		변수에 대입할 컬럼 명확히 정의 -->
+	<!-- 
+	<resultMap type="egovframework.member.vo.MemberVO" id="memberMap">
+		<id property="userId" column="userId"/>
+		<result property="userId" column="userId" />
+		<result property="userPw" column="userPw" />
+		<result property="userName" column="userName" />
+		<result property="nickName" column="nickName" />
+		<result property="email" column="email" />
+		<result property="gender" column="gender" />
+		<result property="reg" column="reg" />
+		<result property="enabled" column="enabled" />
+		<result property="sns" column="sns" />
+	</resultMap>
+	 -->
+
+	<insert id="addMember">
+		insert into egovOauthMember(userNum,userId,userPw,nickName,userName,email,gender) 
+		values(egovOauthMember_seq.nextval,#{userId},#{userPw},#{nickName}, #{userName}, #{email}, #{gender})
+	</insert>
+	<!-- 
+	<insert id="addMemberNaver">
+		insert into egovMember(userNum,userId,nickName,userPw,userName,email,gender,sns) 
+		values(egovMember_seq.nextval,#{userId},#{nickName}, #{userPw},#{userName}, #{email}, #{gender},#{sns})
+	</insert>
+	<insert id="addMemberKakao">
+		insert into egovMember(userNum,userId,nickName,userPw,userName,email,gender,sns) 
+		values(egovMember_seq.nextval,#{userId},#{nickName},#{userPw}, #{userName}, #{email}, #{gender},#{sns})
+	</insert>
+	
+	<insert id="addAuth">
+		insert into egovMemberSec_auth(userId) values(#{userId})
+	</insert>
+	 -->
+
+	<select id="idpwChk" resultType="int">
+		select count(*) from egovOauthMember where userId = #{userId} and userPw = #{userPw}
+	</select>
+	<select id="memberChk" resultType="int">
+		select enabled from egovOauthMember where userId=#{userId}
+	</select>
+	
+	<!-- 
+	<insert id="saveToken">
+		insert into tokens(aToken, rToken) values(#{aToken},#{rToken})
+	</insert>
+	<insert id="saveTokensNum">
+		insert into tokens(userNum,aToken, rToken) values(#{userNum},#{aToken},#{rToken})
+	</insert>
+	 -->
+	
+	<select id="getUserNum" resultType="int">
+		select userNum from egovOauthMember where userId=#{userId}
+	</select>
+	
+	<select id="tokenFind" resultType="int">
+		select count(*) from tokens where userNum=#{userNum}
+	</select>
+	
+	<insert id="addTokens">
+		insert into tokens(userNum) values(#{userNum})
+	</insert>
+	
+	<update id="updateTokens">
+		update tokens set aaToken=#{aaToken}, rrToken=#{rrToken} where userNum=#{userNum}
+	</update>
+	<update id="deleteTokens">
+		update tokens set aaToken=null, rrToken=null where rrToken=#{rrToken}
+	</update>
+	
+	<select id="getUserNumAtTokenDB" resultType="int">
+		select userNum from tokens where rrToken=#{rrToken}
+	</select>
+	
+	<select id="getUserId" resultType="String" >
+		select userId from egovOauthMember where userNum=#{getUserNumAtTokenDB}
+ 	</select>
+	
+	<update id="saveAaToken">
+		update tokens set aaToken=#{aaToken} where userNum=#{userNum}
+	</update>
+	
+	
+	
+	
+	
+	
+	<!-- 
+	
+	<select id="idChk" resultType="int">
+		select count(*) from egovMember where userId = #{id}
+	</select>
+	
+	<select id="getMember" resultMap="memberMap">
+		select m.*, a.auth 
+		from egovMember m, egovMemberSec_auth a 
+		where m.userId = a.userId
+		and m.userId = #{userId}
+	</select>
+	 -->
+	
+</mapper>
