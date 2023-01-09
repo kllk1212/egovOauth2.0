@@ -64,6 +64,20 @@ create table tokens(
     rrToken varchar2(200)		-- 리플레쉬 토큰
 );
 
-
-
+	<!-- 
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver" />
+		<property name="url" value="jdbc:mariadb://아이피" />
+		<property name="username" value="root" />
+		<property name="password" value="java11" />
+	</bean>
+    
+    <!-- oracle (POM에서 commons-dbcp, ojdbc(라이센스 사항으로 별도로 배포되지 않음) 관련 라이브러리 설정)
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@아이피:ORCL"/>
+        <property name="username" value="leetest"/>
+        <property name="password" value="java11"/>
+    </bean>
 
